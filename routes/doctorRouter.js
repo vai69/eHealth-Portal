@@ -18,7 +18,7 @@ var upload = multer({ storage: storage });*/
 
 const Doctor = require('../models/doctor');
 const DoctorQueue = require('../models/doctorqueue');
-const Appoint = require('../models/Appoint');
+const Patient = require('../models/patient');
 
 
 var doctorRouter = express.Router();
@@ -38,18 +38,20 @@ doctorRouter.route('/')
 .post((req, res, next) => {
   //console.log(req.Id_proof);
  // res.send(req.files.files);
- res.send("success");
+  var ob;
   var degre=[];
         for (var i = 0; i < req.files.files.length; i++) {
-            var ob={
-              data: new Buffer(req.files.files[i].data,'base64'),
+            ob={
+              data: req.files.files[i].data,
               contentType: req.files.files[i].name.split('.').pop()
             }
+            
             degre.push(ob);
         }
-        //res.send(degre);
+        res.send(req.files.files);
+
    var obj={
-    doc_no:1,
+      doctor:1,
       username:req.body.username,
       password:req.body.password,
       DOB:req.body.DOB,
@@ -61,8 +63,10 @@ doctorRouter.route('/')
       state:req.body.state,
       district:req.body.district,
       city:req.body.city,
+
+
       Id_proof:{
-        data: new Buffer(req.files.Id_proof.data,'base64'),
+        data: req.files.Id_proof.data,
         contentType: req.files.Id_proof.name.split('.').pop()
       },
       aadhar:req.body.aadhar,
@@ -70,15 +74,48 @@ doctorRouter.route('/')
     }
   DoctorQueue.create(obj)
   .then((doc) => {
-      //res.statusCode = 200;
-      //res.setHeader("Content-Type" , 'application/json');
-      //res.json(obj);
+      res.statusCode = 200;
+      res.setHeader("Content-Type" , 'application/json');
+      res.json(obj);
   }), (err) => next(err)
   .catch((err) => next(err));
      
 })
 
 
+
+doctorRouter.route('/search')
+
+.get((req,res,next)=>{
+    res.render('search');
+})
+
+.post((req,res,next)=>{
+  
+  Patient.findOne({ aadhar : req.body.aadhar })
+  .then((doc)=>{
+    
+    if(doc == null)
+    {
+      res.send("No such Patient");
+    }
+    else
+    {
+      
+        const url =   doc._id.toString();
+
+        const str = doc.image.data.toString('base64');
+
+        var img = {
+            contentType: doc.image.contentType,
+            data : str
+        }
+        // res.send(doc);
+        res.render('verifiedInfo' , { patient : doc , postURL : url , image : img , certs : [] , isPat : 1});
+    
+    }
+  })
+})
 
 
 
