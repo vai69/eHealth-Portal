@@ -27,23 +27,24 @@ var FileSchema = new Schema({
 
 
 var patientSchema = new Schema({
-    patient:{
-        type : Number
+    pat_no:{
+        type:Number
     },
     username:{
         type : String,
         requried : true,
         unique : true
     },
-    password:{
-        type : String,
-        requried : true,
-    },
     DOB : {
         type:Date ,
          required : true
     }
     ,
+     password:{
+        type : String,
+        requried : true,
+        unique : true
+    },
     name : {
         type : String,
         requried : true

@@ -9,9 +9,6 @@ var Degrees = new Schema({
 
 
 var doctorSchema = new Schema({
-    doctor:{
-        type:Number
-    },
     username:{
         type : String,
         requried : true,

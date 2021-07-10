@@ -48,8 +48,46 @@ dr_dashboardRouter.route('/60e83ba64a556a1d908703c3')
     }
 })
 	
+	
 })
 
+dr_dashboardRouter.route('/fileupload')
+.get((req,res,next)=>{
+    Doctor.findById("60e83ba64a556a1d908703c3")
+	.then((doc)=>{
+		console.log(doc.email);
+		 res.render('fileupload',{doctor:doc});
+	})
+})
+
+.post((req,res,next)=>{
+	if(req.files)
+  {
+
+    Doctor.findById("60e83ba64a556a1d908703c3")
+  .then((doc)=>{
+    var ob={
+              data: new Buffer(req.files.deg.data,'base64'),
+              contentType: req.files.deg.name.split('.').pop()
+           }
+           doc.Certificates.push(ob);
+           Doctor.updateOne({_id: objectId("60e83ba64a556a1d908703c3")},{$set:{Certificates:doc.Certificates}},
+            function (err,result) {
+            if (err){
+                console.log(err)
+            }else{
+                console.log(result); 
+                res.send("successfully");
+            }
+      })
+    })
+  }
+  else
+  {
+    console.log("cannot") 
+  }
+
+})
 
 
 

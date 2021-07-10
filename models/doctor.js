@@ -6,9 +6,10 @@ var Degrees = new Schema({
         contentType: String
 });
 
+
 var doctorSchema = new Schema({
-    doctor:{
-        type:Number
+    doc_no:{
+        type:Number,
     },
     username:{
         type : String,
@@ -72,6 +73,7 @@ var doctorSchema = new Schema({
 },{
     timestamps : true
 });
+
 
 var Doctor = mongoose.model('doctor' , doctorSchema);
 

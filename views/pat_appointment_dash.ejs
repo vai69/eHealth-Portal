@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <p>**doctorlist**</p>
+   <form action="" method="POST" enctype="multipart/form-data">
+    <% doctor.forEach(doct=> {%>
+        <input type="radio"  name="doctor" value="<%= doct._id %>"><p><%=doct.name%></p>
+        <p><%=doct.Specialization%></p>
+        <br><br>
+
+    <%  }); %>
+    <br> <br>
+    <label>date of appointment</label>
+    <input type="date" name="DOA"  required="true">
+    <input type="submit" value="request"><br>
+</form>
+
+</body>
+</html>
