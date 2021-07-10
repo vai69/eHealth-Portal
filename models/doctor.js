@@ -1,36 +1,22 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-
-var treatmentSchema = new Schema({
-    prescription:{
-        type : String,
-    },
-    reportConclusion : {
-        type : String
-    }
+var Degrees = new Schema({
+        data: Buffer,
+        contentType: String
 });
 
 
-var FileSchema = new Schema({
-    drName : {
-        type : String,
-        requried : true
-    },
-    treatment : [treatmentSchema]
-
-},{
-    timestamps : true
-});
-
-
-
-
-var patientSchema = new Schema({
-    pat_no:{
-        type:Number
+var doctorSchema = new Schema({
+    doc_no:{
+        type:Number,
     },
     username:{
+        type : String,
+        requried : true,
+        unique : true
+    },
+    password:{
         type : String,
         requried : true,
         unique : true
@@ -40,11 +26,7 @@ var patientSchema = new Schema({
          required : true
     }
     ,
-     password:{
-        type : String,
-        requried : true,
-        unique : true
-    },
+
     name : {
         type : String,
         requried : true
@@ -58,9 +40,9 @@ var patientSchema = new Schema({
         required : true,
         unique : true
     },
-    bloodGr : {
+    Specialization:{
         type : String,
-        required : true
+        requried : true
     },
     state:{
         type : String,
@@ -70,27 +52,30 @@ var patientSchema = new Schema({
         type : String,
         requried : true
     },
+    city:{
+        type : String,
+        requried : true
+    },
+    Hospital_name:{
+        type : String,
+        requried : true
+    },
     aadhar : {
         type : String,
         requried : true,
         unique : true
     },
-    image: {
-        data: Buffer, 
+    Id_proof: {
+        data: Buffer,
         contentType: String
     },
-    nomeneeAadhar:{
-        type : String,
-        requried : true,
-    },
-    files : [FileSchema]  
+    Certificates:[Degrees]
 },{
     timestamps : true
 });
 
 
+var Doctor = mongoose.model('doctor' , doctorSchema);
 
-var Patient = mongoose.model('patient' , patientSchema);
 
-
-module.exports = Patient;
+module.exports = Doctor;
