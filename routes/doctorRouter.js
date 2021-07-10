@@ -16,61 +16,61 @@ const fileUpload = require('express-fileupload');
 });
 var upload = multer({ storage: storage });*/
 
-const Patient = require('../models/patient');
-const PatientQueue = require('../models/patientqueue');
+const Doctor = require('../models/doctor');
+const DoctorQueue = require('../models/doctorqueue');
 
 
-var patientRouter = express.Router();
+var doctorRouter = express.Router();
 
 // middlewares
-patientRouter.use(bodyParser.json());
+doctorRouter.use(bodyParser.json());
 
 
-patientRouter.route('/')
+doctorRouter.route('/')
 
 
 
 .get((req, res, next) => {
-    res.render('patient');
+    res.render('doctor');
 })
 
 .post((req, res, next) => {
   //console.log(req.Id_proof);
  // res.send(req.files.files);
-  //var degre=[];
-        //for (var i = 0; i < req.files.files.length; i++) {
-            //var ob={
-              //data: new Buffer(req.files.files[i].data,'base64'),
-              //contentType: req.files.files[i].name.split('.').pop()
-            //}
-            //degre.push(ob);
-        //}
+  var degre=[];
+        for (var i = 0; i < req.files.files.length; i++) {
+            var ob={
+              data: new Buffer(req.files.files[i].data,'base64'),
+              contentType: req.files.files[i].name.split('.').pop()
+            }
+            degre.push(ob);
+        }
         //res.send(degre);
-    console.log(req.files.myFile);
    var obj={
-        pat_no:2,
+    doc_no:1,
       username:req.body.username,
       password:req.body.password,
       DOB:req.body.DOB,
       name:req.body.name,
       email:req.body.email,
       mobile:req.body.mobile,
-      bloodGr:req.body.bloodGr,
+      Specialization:req.body.Special,
+      Hospital_name:req.body.Hname,
       state:req.body.state,
       district:req.body.district,
-      image:{
-        data: new Buffer(req.files.myFile.data,'base64'),
-        contentType: req.files.myFile.name.split('.').pop()
+      city:req.body.city,
+      Id_proof:{
+        data: new Buffer(req.files.Id_proof.data,'base64'),
+        contentType: req.files.Id_proof.name.split('.').pop()
       },
       aadhar:req.body.aadhar,
-      nomeneeAadhar:req.body.nomeneeAadhar
+      Certificates:degre
     }
-  PatientQueue.create(obj)
+  DoctorQueue.create(obj)
   .then((doc) => {
       //res.statusCode = 200;
       //res.setHeader("Content-Type" , 'application/json');
       //res.json(obj);
-      res.send(doc);
   }), (err) => next(err)
   .catch((err) => next(err));
      
@@ -81,7 +81,7 @@ patientRouter.route('/')
 
 
 
-module.exports = patientRouter;
+module.exports = doctorRouter;
 
 
 

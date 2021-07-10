@@ -9,14 +9,17 @@
 <body>
     
     <form  action = "<%= postURL%>"   method="POST" >
-        <p><%= patient%></p>
-        <p><%= image.contentType %></p>
-        <img src= "data:<%= image.contentType %>;base64,<%= image.data %>">
+        <p><%= doctor%></p>
+        <img src= "data:<%= image1.contentType %>;base64,<%= image1.data %>">
+        <% image2.forEach(function(img2){ %>
+            <img src= "data:<%= img2.contentType %>;base64,<%= img2.data %>">
+        <% }) %>
+        
         
         <textarea name="comment" cols="30" rows="10">Your application is being verified successfully</textarea>
 
-        <button type="submit" name="submit" value="success$<%= patient.email %>" >Success</button>
-        <button type="submit" name="submit" value="failure$<%= patient.email %>" >Failure</button>
+        <button type="submit" name="submit" value="success$<%= doctor.email %>" >Success</button>
+        <button type="submit" name="submit" value="failure$<%= doctor.email %>" >Failure</button>
     </form>
    
 </body>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="stylesheet" href="../stylesheets/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body class="bg">
+  <div id="container_update">
+    <form  action="" method="POST" enctype="multipart/form-data">
+            <label>email</label>
+            <input type="text" name="email"  value="<%= doctor.email %>" ><br><br>
+             <label>state</label>
+            <input type="text" name="state"  value="<%= doctor.state %>"><br><br>
+            <label>district</label>
+            <input type="text" name="district"  value="<%= doctor.district %>"><br><br>
+             <label>city</label>
+            <input type="text" name="city" value="<%= doctor.city %>"><br><br>
+             <label>Hospital Name</label>
+            <input type="text" name="Hname" value="<%= doctor.Hospital_name %>"><br><br>
+             <label>Mobile Number</label>
+             <input type="number" name="mobile" value="<%= doctor.mobile %>"><br><br>
+             <label>Degree_Certificate</label><input type="file" name="deg"><br> <br>
+            <input type="submit" value="Update"><br>
+    </form>
+  </div>
+
+</body>
+</html>
