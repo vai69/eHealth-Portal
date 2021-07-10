@@ -7,8 +7,6 @@ var mongoose = require('mongoose');
 var expressFileUpload = require('express-fileupload');
 
 
-
-
 const Patient = require('../models/patient');
 const PatientQueue = require('../models/patientqueue');
 

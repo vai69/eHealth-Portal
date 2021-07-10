@@ -12,7 +12,11 @@
         <p><%= patient%></p>
         <p><%= image.contentType %></p>
         <img src= "data:<%= image.contentType %>;base64,<%= image.data %>">
-        <button type="submit" name="sumit" value="submit" >click</button>
+        
+        <textarea name="comment" cols="30" rows="10">Your application is being verified successfully</textarea>
+
+        <button type="submit" name="submit" value="success$<%= patient.email %>" >Success</button>
+        <button type="submit" name="submit" value="failure$<%= patient.email %>" >Failure</button>
     </form>
    
 </body>
