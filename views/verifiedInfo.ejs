@@ -8,9 +8,22 @@
 </head>
 <body>
     
-    <p><%= patient%></p>
-    <p><%= image.contentType %></p>
-    <img src= "data:<%= image.contentType %>;base64,<%= image.data %>">
+    <% if(  isPat  == 1 ) {%>
+        
+            <p><%= patient%></p>
+            <img src= "data:<%= image.contentType %>;base64,<%= image.data %>">
+        
+            
+    <%}else {%>
+            <p><%= patient%></p>
+            <img src= "data:<%= image.contentType %>;base64,<%= image.data %>">
+            <p>certs</p>
+
+            <% certs.forEach( cert => { %>
+                <img src= "data:<%= cert.contentType %>;base64,<%= cert.data %>">
+            <% }); %>
+            
+    <%}%>
    
 </body>
 </html>

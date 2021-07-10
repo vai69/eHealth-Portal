@@ -13,9 +13,11 @@ var ejs = require('ejs');
 
 
 
-var indexRouter = require('./routes/index');
+// var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 // var patientRouter = require('./routes/patientRouter');
+var doctorRouter = require('./routes/doctorRouter')
+var loginRouter = require('./routes/loginRouter');
 var adminRouter = require('./routes/adminRouter');
 var app = express();
 
@@ -77,6 +79,8 @@ var upload = multer({ storage: storage });
 
 var Patient = require("./models/patient");
 var PatientQueue = require('./models/patientqueue');
+var Doctor = require('./models/doctor');
+var DoctorQueue = require('./models/doctorqueue');
 
 
 
@@ -94,10 +98,11 @@ var connect = mongoose.connect('mongodb://localhost:27017/eHealth')
 
 
 // routes
-app.use('/', indexRouter);
+app.use('/', loginRouter);
 app.use('/users', usersRouter);
 // app.use('/patient' , patientRouter );
 app.use('/admin' , adminRouter);
+app.use('/doctor' , doctorRouter);
 
 
 
@@ -116,8 +121,9 @@ app.post('/patient' , (req,res,next)=>{
   console.log(req.files);
   var pat = new PatientQueue();
 
-
+  pat.patient = 1;
   pat.username = req.body.username;
+  pat.password = req.body.password;
   pat.DOB = req.body.DOB; 
   pat.name = req.body.name;
   pat.email = req.body.email;
@@ -126,8 +132,10 @@ app.post('/patient' , (req,res,next)=>{
   pat.state = req.body.state;
   pat.district = req.body.district;
   pat.aadhar = req.body.aadhar;
+
   pat.image.data = req.files.myFile.data;
   pat.image.contentType = req.files.myFile.name.split('.').pop();
+  
   pat.nomeneeAadhar = req.body.nomeneeAadhar;
 
   // res.send(req.files.myFile);

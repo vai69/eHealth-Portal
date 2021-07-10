@@ -8,8 +8,14 @@
 </head>
 <body>
    
+    <h1>patient</h1>
     <% patQueue.forEach(patient => {%>
         <p> <a href= "admin/<%= patient._id%>" > <%= patient.username %> </a>  <br></p>
+    <%  }); %>
+
+    <h1>doctor</h1>
+    <% doctorQueue.forEach(doctor => {%>
+        <p> <a href= "admin/<%= doctor._id%>" > <%= doctor.username %> </a>  <br></p>
     <%  }); %>
 </body>
 </html>
