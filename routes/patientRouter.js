@@ -1,16 +1,22 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-
-
+var multer = require('multer');
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, 'uploads')
+  },
+  filename: (req, file, cb) => {
+      cb(null, file.fieldname + '-' + Date.now())
+  }
+});
+var upload = multer({ storage: storage });
 
 const Patient = require('../models/patient');
 const PatientQueue = require('../models/patientqueue');
 
 
 var patientRouter = express.Router();
-
-
 
 // middlewares
 patientRouter.use(bodyParser.json());
@@ -31,8 +37,6 @@ patientRouter.route('/')
     }), (err)=>next(err)
     .catch((err)=>next(err));
  })
-
-
 
 
 

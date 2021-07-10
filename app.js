@@ -4,6 +4,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+var fs = require('fs');
+var path = require('path');
+require('dotenv/config');
+
+
+
+
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var patientRouter = require('./routes/patientRouter');
@@ -22,6 +30,21 @@ app.set('view engine', 'ejs');
 
 
 
+
+var multer = require('multer');
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, 'uploads')
+  },
+  filename: (req, file, cb) => {
+      cb(null, file.fieldname + '-' + Date.now())
+  }
+});
+
+var upload = multer({ storage: storage });
+
+
+
 // middlewares
 app.use(logger('dev'));
 app.use(express.json());
@@ -35,9 +58,24 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Database connectivity
 
+
+var multer = require('multer');
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, 'uploads')
+  },
+  filename: (req, file, cb) => {
+      cb(null, file.fieldname + '-' + Date.now())
+  }
+});
+var upload = multer({ storage: storage });
+
+
 var mongoose = require('mongoose');
 var Patient = require("./models/patient");
 var PatientQueue = require('./models/patientqueue');
+
+
 
 
 var connect = mongoose.connect('mongodb://localhost:27017/eHealth')
@@ -48,6 +86,7 @@ var connect = mongoose.connect('mongodb://localhost:27017/eHealth')
   var err = new Error("Error in Database connectivity") ;
   return next(err);
 })
+
 
 
 

@@ -46,8 +46,10 @@ adminRouter.route('/:patID')
         .then(()=>{
             res.send("The patient :" + req.params.patID + " has been succesfully verified");
         })
+        .catch((err)=>next())
         // res.send(doc);
     })
+    .catch((err)=>next())
     // res.send(req.params.patID);
 })
 
