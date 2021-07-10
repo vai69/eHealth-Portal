@@ -67,6 +67,10 @@ var patientSchema = new Schema({
         requried : true,
         unique : true
     },
+    image: {
+        data: Buffer, 
+        contentType: String
+    },
     nomeneeAadhar:{
         type : String,
         requried : true,

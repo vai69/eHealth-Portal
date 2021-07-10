@@ -35,7 +35,15 @@ adminRouter.route('/:patID')
         // res.setHeader("Content-Type" , "application/json");
         // res.send(doc);
         const url =   doc._id.toString();
-        res.render('verify' , { patient : doc , postURL : url });
+
+        const str = doc.image.data.toString('base64');
+
+        var img = {
+            contentType: doc.image.contentType,
+            data : str
+        }
+
+        res.render('verify' , { patient : doc , postURL : url , image : img });
     })
 })
 

@@ -10,6 +10,8 @@
     
     <form  action = "<%= postURL%>"   method="POST" >
         <p><%= patient%></p>
+        <p><%= image.contentType %></p>
+        <img src= "data:<%= image.contentType %>;base64,<%= image.data %>">
         <button type="submit" name="sumit" value="submit" >click</button>
     </form>
    
