@@ -7,12 +7,15 @@
     <title>Document</title>
 </head>
 <body>
-
-    <form action="/dashboard/search" method="POST">
-        Enter Aadhar : <input type="text" name="aadhar">
-        <button type="submit" name="submit" > Submit </button>
-        
-    </form>
     
+  
+        
+        <p><%= patient%></p>
+        <img src= "data:<%= image.contentType %>;base64,<%= image.data %>">
+        <a href="/dashboard/search/<%= patient._id %>/file"><button>Report New File</button></a> 
+        
+            
+
+   
 </body>
 </html>

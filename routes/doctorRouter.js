@@ -128,60 +128,6 @@ doctorRouter.route('/')
 
 
 
-doctorRouter.route('/search')
-
-.get((req,res,next)=>{
-  var type = req.cookies.type;
-  var user = req.cookies.user;
-  if(type == 'doctor')
-  {
-    res.render('search');
-  }
-  else
-  {
-    res.redirect('/');
-  }
-})
-
-.post((req,res,next)=>{
-  
-
-  var type = req.cookies.type;
-  var user = req.cookies.user;
-  if(type == 'doctor')
-  {
-    Patient.findOne({ aadhar : req.body.aadhar })
-    .then((doc)=>{
-      
-      if(doc == null)
-      {
-        res.send("No such Patient");
-      }
-      else
-      {
-        
-          const url =   doc._id.toString();
-
-          const str = doc.image.data.toString('base64');
-
-          var img = {
-              contentType: doc.image.contentType,
-              data : str
-          }
-          // res.send(doc);
-          res.render('verifiedInfo' , { patient : doc , postURL : url , image : img , certs : [] , isPat : 1});
-      
-      }
-    })
-  }
-  else
-  {
-    res.redirect('/');
-  }
-
- 
-})
-
 
 
 
