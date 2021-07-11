@@ -18,8 +18,7 @@ var doctorSchema = new Schema({
     },
     password:{
         type : String,
-        requried : true,
-        unique : true
+        requried : true
     },
     DOB : {
         type:Date ,

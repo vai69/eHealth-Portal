@@ -1,9 +1,13 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var cookieParser = require('cookie-parser');
 const multer = require("multer");
 const path = require('path');
 const fileUpload = require('express-fileupload');
+
+
+
 
 
 /*var storage = multer.diskStorage({
@@ -25,15 +29,21 @@ const DoctorQueue = require('../models/doctorqueue');
 var patientRouter = express.Router();
 
 // middlewares
+patientRouter.use(cookieParser());
 patientRouter.use(bodyParser.json());
-
 
 patientRouter.route('/')
 
 
 
 .get((req, res, next) => {
+
+  var user = req.cookies.user;
+  var type = req.cookies.type;
+  if(type == null)
     res.render('patient');
+  else
+    res.redirect('/');
 })
 
 .post((req, res, next) => {

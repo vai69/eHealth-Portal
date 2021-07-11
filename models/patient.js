@@ -42,8 +42,7 @@ var patientSchema = new Schema({
     ,
      password:{
         type : String,
-        requried : true,
-        unique : true
+        requried : true
     },
     name : {
         type : String,
