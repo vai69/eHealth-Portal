@@ -16,10 +16,10 @@ const fileUpload = require('express-fileupload');
 });
 var upload = multer({ storage: storage });*/
 
+const Patient = require('../models/patient');
+const PatientQueue = require('../models/patientqueue');
 const Doctor = require('../models/doctor');
 const DoctorQueue = require('../models/doctorqueue');
-const Patient = require('../models/patient');
-
 
 var doctorRouter = express.Router();
 
@@ -38,6 +38,7 @@ doctorRouter.route('/')
 .post((req, res, next) => {
   //console.log(req.Id_proof);
  // res.send(req.files.files);
+ 
   var ob;
   var degre=[];
         for (var i = 0; i < req.files.files.length; i++) {
@@ -48,7 +49,7 @@ doctorRouter.route('/')
             
             degre.push(ob);
         }
-        res.send(req.files.files);
+        
 
    var obj={
       doctor:1,
@@ -71,14 +72,44 @@ doctorRouter.route('/')
       },
       aadhar:req.body.aadhar,
       Certificates:degre
-    }
-  DoctorQueue.create(obj)
-  .then((doc) => {
-      res.statusCode = 200;
-      res.setHeader("Content-Type" , 'application/json');
-      res.json(obj);
-  }), (err) => next(err)
-  .catch((err) => next(err));
+    } 
+
+    // res.send("Yoo");
+    var docq , doc;
+    PatientQueue.findOne({username : req.body.username})
+    .then((result)=>{
+      if(result == null)
+      {
+        Patient.findOne({username : req.body.username})
+        .then((result)=>{
+          if(result == null)
+          {
+                if(doc == null && docq == null)
+                {
+                  DoctorQueue.create(obj)
+                  .then((doc) => {
+                      res.send(doc);
+                  },(err) => {
+                    res.send("try some other username");
+                  })
+                  .catch((err) => {
+                    res.send("try some other username");
+                  });
+                }
+                else
+                {
+                  res.send("try some other username");
+                }
+          }
+          else
+          {
+            res.send("try some other username");
+          }
+        })
+      }
+      else
+        res.send("try some other username");
+    });
      
 })
 

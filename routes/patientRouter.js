@@ -18,6 +18,8 @@ var upload = multer({ storage: storage });*/
 
 const Patient = require('../models/patient');
 const PatientQueue = require('../models/patientqueue');
+const Doctor = require('../models/doctor');
+const DoctorQueue = require('../models/doctorqueue');
 
 
 var patientRouter = express.Router();
@@ -65,15 +67,48 @@ patientRouter.route('/')
       aadhar:req.body.aadhar,
       nomeneeAadhar:req.body.nomeneeAadhar
     }
-  PatientQueue.create(obj)
-  .then((doc) => {
-      //res.statusCode = 200;
-      //res.setHeader("Content-Type" , 'application/json');
-      //res.json(obj);
-      res.send(doc);
-  }), (err) => next(err)
-  .catch((err) => next(err));
-     
+
+
+  var docq , doc;
+
+
+  
+  DoctorQueue.findOne({username : req.body.username})
+  .then((result)=>{
+    if(result == null)
+    {
+      Doctor.findOne({username : req.body.username})
+      .then((result)=>{
+        if(result == null)
+        {
+              if(doc == null && docq == null)
+              {
+                PatientQueue.create(obj)
+                .then((doc) => {
+                    res.send(doc);
+                },(err) => {
+                  res.send("try some other username");
+                })
+                .catch((err) => {
+                  res.send("try some other username");
+                });
+              }
+              else
+              {
+                res.send("try some other username");
+              }
+        }
+        else
+        {
+          res.send("try some other username");
+        }
+      })
+    }
+    else
+      res.send("try some other username");
+  });
+
+      
 })
 
 

@@ -42,7 +42,7 @@ var patientRouter = require('./routes/patientRouter');
 app.use('/doctor', doctorRouter);
 app.use('/patient', patientRouter);
 app.use('/admin', adminRouter);
-app.use('/login', loginRouter);
+app.use('/', loginRouter);
 app.use('/dashboard', dr_dashboardRouter);
 app.use('/pdashboard', pat_dashboardRouter);
 

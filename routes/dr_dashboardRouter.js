@@ -19,7 +19,7 @@ dr_dashboardRouter.route('/')
 		 res.render('dashboard',{doctor:doc});
 	})
    
-})
+}) 
 
 dr_dashboardRouter.route('/60e83ba64a556a1d908703c3')
 .get((req,res,next)=>{

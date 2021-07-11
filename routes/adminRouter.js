@@ -12,9 +12,7 @@ var transporter = nodemailer.createTransport({
     }
   });
   
-  
-  
-  
+   
   
 const PatientQueue = require('../models/patientqueue');
 const Patient = require('../models/patient');
