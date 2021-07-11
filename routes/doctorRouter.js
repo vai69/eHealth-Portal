@@ -132,6 +132,3 @@ doctorRouter.route('/')
 
 
 module.exports = doctorRouter;
-
-
-

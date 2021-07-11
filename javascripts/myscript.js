@@ -1,31 +1,39 @@
- var obj={
-      username:req.body.username,
-      DOB:req.body.DOB,
-      name:req.body.name,
-      email:req.body.email,
-      mobile:req.body.mobile,
-      Specialization:req.body.Special,
-      Hospital_name:req.body.Hname,
-      state:req.body.state,
-      district:req.body.district,
-      city:req.body.city,
-      Id_proof:{
-        data: new Buffer(req.files.Id_proof.data,'base64'),
-        contentType: req.files.Id_proof.name.split('.').pop()
-      },
-      aadhar:req.body.aadhar,
-      Degree_Certificate:{
-        data: new Buffer(req.files.Degree_cer.data,'base64'),
-        contentType: req.files.Degree_cer.name.split('.').pop()
-      },
+if(fl)
+  {
+
+    Doctor.findById("60e83ba64a556a1d908703c3")
+  .then((doc)=>{
+    var ob={
+              data: new Buffer(fl.deg.data,'base64'),
+              contentType: fl.deg.name.split('.').pop()
+           }
+           doc.Certificates.push(ob);
+           Doctor.updateOne({_id: objectId("60e83ba64a556a1d908703c3")},{$set:{Certificates:doc.Certificates}},
+            function (err,result) {
+            if (err){
+                console.log(err)
+            }else{
+                console.log(result); 
+                res.send("successfully");
+            }
+      })
+    })
+  }
+  else
+  {
+    console.log("cannot") 
+  }
+
+
+  for(var i=0;i<dc.length;i++)
+    {
+        Patient.findById(dc[i].pat_id)
+        .then((doc)=>{
+          var ob={
+            name:doc.name,
+            date:dc.date,
+            meet_url:dc.meet_url
+          }
+          obj.push(ob);
+        })
     }
-    //res.send(obj);
-     res.statusCode = 200;
-        res.setHeader("Content-Type" , 'application/json');
-DoctorQueue.create(obj)
-.then((doc) => {
-    //res.statusCode = 200;
-    //res.setHeader("Content-Type" , 'application/json');
-    res.json(obj);
-}), (err) => next(err)
-.catch((err) => next(err));

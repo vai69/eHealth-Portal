@@ -37,12 +37,13 @@ var patientSchema = new Schema({
     },
     DOB : {
         type:Date ,
-         required : true
+        required : true
     }
     ,
      password:{
         type : String,
-        requried : true
+        requried : true,
+        unique : true
     },
     name : {
         type : String,

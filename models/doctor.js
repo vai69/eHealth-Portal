@@ -1,6 +1,52 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+
+var appointment = new Schema({
+    pat_id : {
+        type : String,
+        unique: false
+    },
+    meet_url :{
+        type : String,
+        unique: false
+    },
+    date:{
+        type:Date
+    },
+    name:
+    {
+        type:String
+    },
+    email:
+    {
+        type:String
+    }
+
+});
+
+var accepted_apt = new Schema({
+    meet_url :{
+        type : String,
+        unique: false
+    },
+    date:{
+        type:Date
+    },
+    name:
+    {
+        type:String
+    },
+    email:
+    {
+        type:String
+    },
+    time:{
+        type:String
+    }
+
+});
+
 var Degrees = new Schema({
         data: Buffer,
         contentType: String
@@ -18,13 +64,13 @@ var doctorSchema = new Schema({
     },
     password:{
         type : String,
-        requried : true
+        requried : true,
+        unique : true
     },
     DOB : {
         type:Date ,
          required : true
-    }
-    ,
+    },
 
     name : {
         type : String,
@@ -68,7 +114,9 @@ var doctorSchema = new Schema({
         data: Buffer,
         contentType: String
     },
-    Certificates:[Degrees]
+    Certificates:[Degrees],
+    appointments:[appointment],
+    acct_apt:[accepted_apt]
 },{
     timestamps : true
 });

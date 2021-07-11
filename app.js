@@ -63,17 +63,12 @@ var connect = mongoose.connect('mongodb://localhost:27017/doctor', {
 //importiong models
 var Doctor = require("./models/doctor");
 var DoctorQueue = require('./models/doctorqueue');
-var Patient = require("./models/doctor");
-var PatientQueue = require('./models/doctorqueue');
 
 app.get('/logout' , (req,res,next)=>{
     res.clearCookie('user');
     res.clearCookie('type');
     res.redirect('/');
 });
-
-
-
 
 
 module.exports = app;

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+
+<body class="bg">
+    <div id="container_login">
+        <form action="" method="POST">
+        <% apt.forEach(apt=> {%>
+                <li><%=apt.name%><br>date:<%=apt.date%><br>meet_url:<%=apt.meet_url%></li><br>
+                <textarea name="comment" cols="30" rows="10">Your appointment request is cancelled or if accepted please mention time </textarea>
+                <label>time for appointment</label></label><input type="text" name="time">
+                <button type="submit" name="submit" value="accept$<%=apt.name%>$<%=apt.email%>$<%=apt.date%>$apt.meet_url%>">accept</button><br>
+                <button type="submit" name="submit" value="reject$<%=apt.name%>$<%=apt.email%>$<%=apt.date%>$apt.meet_url%>">reject</button><br> 
+        <br><br>
+
+    <%  }); %>
+</form>
+    </div>
+</body>
+
+
+</html>

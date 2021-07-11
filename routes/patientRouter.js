@@ -1,13 +1,9 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var cookieParser = require('cookie-parser');
 const multer = require("multer");
 const path = require('path');
 const fileUpload = require('express-fileupload');
-
-
-
 
 
 /*var storage = multer.diskStorage({
@@ -22,28 +18,20 @@ var upload = multer({ storage: storage });*/
 
 const Patient = require('../models/patient');
 const PatientQueue = require('../models/patientqueue');
-const Doctor = require('../models/doctor');
-const DoctorQueue = require('../models/doctorqueue');
 
 
 var patientRouter = express.Router();
 
 // middlewares
-patientRouter.use(cookieParser());
 patientRouter.use(bodyParser.json());
+
 
 patientRouter.route('/')
 
 
 
 .get((req, res, next) => {
-
-  var user = req.cookies.user;
-  var type = req.cookies.type;
-  if(type == null)
     res.render('patient');
-  else
-    res.redirect('/');
 })
 
 .post((req, res, next) => {
@@ -77,48 +65,15 @@ patientRouter.route('/')
       aadhar:req.body.aadhar,
       nomeneeAadhar:req.body.nomeneeAadhar
     }
-
-
-  var docq , doc;
-
-
-  
-  DoctorQueue.findOne({username : req.body.username})
-  .then((result)=>{
-    if(result == null)
-    {
-      Doctor.findOne({username : req.body.username})
-      .then((result)=>{
-        if(result == null)
-        {
-              if(doc == null && docq == null)
-              {
-                PatientQueue.create(obj)
-                .then((doc) => {
-                    res.send(doc);
-                },(err) => {
-                  res.send("try some other username");
-                })
-                .catch((err) => {
-                  res.send("try some other username");
-                });
-              }
-              else
-              {
-                res.send("try some other username");
-              }
-        }
-        else
-        {
-          res.send("try some other username");
-        }
-      })
-    }
-    else
-      res.send("try some other username");
-  });
-
-      
+  PatientQueue.create(obj)
+  .then((doc) => {
+      //res.statusCode = 200;
+      //res.setHeader("Content-Type" , 'application/json');
+      //res.json(obj);
+      res.send(doc);
+  }), (err) => next(err)
+  .catch((err) => next(err));
+     
 })
 
 
