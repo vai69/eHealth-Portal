@@ -20,8 +20,7 @@ var doctorSchema = new Schema({
         unique : true
     },
     DOB : {
-        type:Date ,
-         required : true
+        type:Date
     }
     ,
 
@@ -35,7 +34,6 @@ var doctorSchema = new Schema({
     },
     mobile:{
         type : Number,
-        required : true,
         unique : true
     },
     Specialization:{

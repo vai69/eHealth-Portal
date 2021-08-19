@@ -9,20 +9,27 @@
     <title>Document</title>
 </head>
 
-<body class="bg">
-    <div id="container_login">
-        <form action="" method="POST">
+<body style="background-color: rgba(13, 70, 83, 0.78);">
+    <a href="/logout">
+        <button class="btn btn-danger btn-lg" style="z-index: 1;float:right; margin-top: 0px">Logout</button></a>
+   <h2 style="color: white;text-align: center;margin-top: 40px">**Appointment Requests**</h2><br><br>
+    <div style="text-align: center;font-size: 20px;margin-left: 250px;font-family: Georgia, Times, 'Times New Roman', serif;background-color:rgba(255,255,255,.8);border: 1px solid;box-sizing:border-box;width: 900px">
         <% apt.forEach(apt=> {%>
-                <li><%=apt.name%><br>date:<%=apt.date%><br>meet_url:<%=apt.meet_url%></li><br>
-                <textarea name="comment" cols="30" rows="10">Your appointment request is cancelled or if accepted please mention time </textarea>
-                <label>time for appointment</label></label><input type="text" name="time">
-                <button type="submit" name="submit" value="accept$<%=apt.name%>$<%=apt.email%>$<%=apt.date%>$apt.meet_url%>">accept</button><br>
-                <button type="submit" name="submit" value="reject$<%=apt.name%>$<%=apt.email%>$<%=apt.date%>$apt.meet_url%>">reject</button><br> 
+        <br><br>
+                <li>Name: <%=apt.name%><br>date:<%=apt.date%><br>meet_url:<a href="<%=apt.meet_url%>">click here to join</a></li><br>
+                <form action="" method="POST">
+                <textarea name="comment" cols="30" rows="10">The appointment request is cancelled or if accepted please mention time </textarea><br>
+                <p>Time for appointment</p>
+                <input type="text" name="time" />
+                <br><br>
+                <button class="btn btn-success" type="submit" name="submit" value="accept$<%=apt.name%>$<%=apt.email%>$<%=apt.date%>$<%=apt.meet_url%>">accept</button>
+                <button class="btn btn-danger" type="submit" name="submit" value="reject$<%=apt.name%>$<%=apt.email%>$<%=apt.date%>$<%=apt.meet_url%>">reject</button><br> 
+                <hr>
+            </form>
         <br><br>
 
     <%  }); %>
-</form>
-    </div>
+</div>
 </body>
 
 

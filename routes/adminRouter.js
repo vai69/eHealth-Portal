@@ -230,30 +230,38 @@ adminRouter.route('/:patID')
 
         if( submitType === "success")
         {
+            var flg=1
+            console.log(req.params.patID)
             PatientQueue.findByIdAndDelete(req.params.patID)
             .then((doc)=>{
-                Patient.insertMany([doc])
-                .then(()=>{
-
-                        var mailOptions = {
-                            from: process.env.EMAIL,
-                            to: curEmail,
-                            subject: 'Sending Email using Node.js',
-                            text: comment
-                        };
-                    
-                        transporter.sendMail(mailOptions, function(error, info){
-                        if (error) {
-                            console.log(error);
-                        } else {
-                            console.log('Email sent: ' + info.response);
-                        }
-                        res.send(`The applicant ${curEmail} is successfully verified`);
-                    });
-                })
+                flg=0
+                console.log("in patient")
+               Patient.insertMany([doc])
+                        .then(()=>{
+                            console.log("in mail")
+                                var mailOptions = {
+                                    from: process.env.EMAIL,
+                                    to: curEmail,
+                                    subject: 'Sending Email using Node.js',
+                                    text: comment
+                                };
+                            
+                                transporter.sendMail(mailOptions, function(error, info){
+                                if (error) {
+                                    console.log(error);
+                                } else {
+                                    console.log('Email sent: ' + info.response);
+                                }
+                                
+                                res.send(`The applicant ${curEmail} is successfully verified`);
+                            });
+                                res.send("patient")
+                        })
                 .catch((err)=>{
+                    if(flg==1){
                     DoctorQueue.findByIdAndDelete(req.params.patID)
                     .then((doc)=>{
+                        console.log("in doctor")
                         Doctor.insertMany([doc])
                         .then(()=>{
                                 var mailOptions = {
@@ -274,6 +282,7 @@ adminRouter.route('/:patID')
                             });
                         })
                     });
+                }
                 })
             } , (err)=>{
                 console.log("Error in Admin route 1.0");
@@ -290,7 +299,7 @@ adminRouter.route('/:patID')
                 if(doc == null)
                 {   
                     // res.send(req.params.patID);
-                    DoctorQueue.findById(req.params.patID)
+                    DoctorQueue.findByIdAndDelete(req.params.patID)
                     .then((doc)=>{
                         var mailOptions = {
                             from: process.env.EMAIL,

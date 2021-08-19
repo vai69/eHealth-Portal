@@ -87,7 +87,7 @@ pat_dashboardRouter.route("/:patID")
         .catch((err) => next(err));
 })
 
-  res.send("hgjh");
+  res.redirect("/pdashboard");
 }
 else
 {

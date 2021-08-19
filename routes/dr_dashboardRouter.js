@@ -3,6 +3,13 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var objectId= require('mongodb').ObjectId;
 var nodemailer = require('nodemailer');
+var fileupload = require("express-fileupload");
+const multer = require("multer");
+const path = require('path');
+var busboy = require('connect-busboy');
+var cors= require('cors');
+const alert = require('alert'); 
+
 
 var transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -17,9 +24,14 @@ const Doctor = require('../models/doctor');
 const Patient = require('../models/patient');
 
 
-
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 const dr_dashboardRouter = express.Router();
+
 dr_dashboardRouter.use(bodyParser.json())
+dr_dashboardRouter.use(busboy());
+
 
 dr_dashboardRouter.route('/')
 
@@ -160,7 +172,7 @@ dr_dashboardRouter.route('/at')
   {
     Doctor.findById(user)
   .then((doc)=>{
-    //console.log(doc.appointments);
+    console.log(doc.acct_apt);
     res.render("appoint_sched",{apt:doc.acct_apt})
 
   })
@@ -170,6 +182,28 @@ else
     res.redirect('/');
   }
 
+})
+
+.post((req,res,next)=>{
+  var user = req.cookies.user;
+  console.log(req.body.close)
+    Doctor.update(
+         { _id:  user}, 
+         { "$pull": { 
+                   "acct_apt": {"meet_url" : req.body.close}
+                 }
+         },function(err, result){
+      if(err){
+           //err
+      }else if(!result){
+           //update not success
+           console.log("no success")
+      }else{
+           console.log(result)
+           console.log("success")
+      }
+  });
+    res.redirect("/dashboard");
 })
 
 dr_dashboardRouter.route('/appoint')
@@ -199,16 +233,15 @@ else
     var comment = req.body.comment;
     var submitType = req.body.submit.split('$')[0];
     var curEmail =  req.body.submit.split('$')[2];
-    var url = req.body.submit.split('$')[4]
+    var url = req.body.submit.split('$')[4];
     var time= req.body.time
     var name=req.body.submit.split('$')[1];
-    var date=req.body.submit.split('$')[3]
-     res.send(curEmail);
+    var date=req.body.submit.split('$')[3];
+    console.log(url)
     if(type == 'doctor')
   { 
     if( submitType === "accept")
     {
-       console.log(user);
            Doctor.updateOne(
          { _id:  user}, 
          { $push: { 
@@ -224,6 +257,22 @@ else
             //res.statusCode = 200;
             //res.setHeader("Content-Type" , 'application/json');
             //res.json(obj);
+            Doctor.update(
+         { _id:  user}, 
+         { "$pull": { 
+                   "appointments": {"email" : curEmail}
+                 }
+         },function(err, result){
+      if(err){
+           //err
+      }else if(!result){
+           //update not success
+           console.log("no success")
+      }else{
+           console.log(result)
+           console.log("success")
+      }
+  });
         }), (err) => next(err)
         .catch((err) => next(err));
 
@@ -245,12 +294,23 @@ else
     }
     else
     {
-      Doctor.updateOne(
+      console.log(user)
+      Doctor.update(
          { _id:  user}, 
-         { $pull: { 
-                   appointments: {email:curEmail}
+         { "$pull": { 
+                   "appointments": {"email" : curEmail}
                  }
-         })
+         },function(err, result){
+      if(err){
+           //err
+      }else if(!result){
+           //update not success
+           console.log("no success")
+      }else{
+           console.log(result)
+           console.log("success")
+      }
+  });
        var mailOptions = {
                         from: process.env.EMAIL,
                         to: curEmail,
@@ -266,6 +326,7 @@ else
                     }
                     res.send(`email is sent to ${curEmail}`);
                 });
+              res.send("dont know")
       }
     }
     else
@@ -275,19 +336,6 @@ else
 
 })
 dr_dashboardRouter.route('/search')
-
-.get((req,res,next)=>{
-  var type = req.cookies.type;
-  var user = req.cookies.user;
-  if(type == 'doctor')
-  {
-    res.render('search');
-  }
-  else
-  {
-    res.redirect('/');
-  }
-})
 
 .post((req,res,next)=>{
   var type = req.cookies.type;
@@ -299,7 +347,8 @@ dr_dashboardRouter.route('/search')
       
       if(doc == null)
       {
-        res.send("No such Patient");
+         alert("No such patient");
+        res.redirect("/dashboard");
       }
       else
       {
@@ -322,49 +371,26 @@ dr_dashboardRouter.route('/search')
  
 })
 
+dr_dashboardRouter.route('/report/:pt/:rt')
 
-
-dr_dashboardRouter.route('/search/:patID/file')
 .get((req,res,next)=>{
+
   var type = req.cookies.type;
   var user = req.cookies.user;
   if(type == 'doctor')
   {
-    
-    Doctor.findById(req.cookies.user)
-    .then((doctor)=>{
-
-      var newFile =  
-      {
-        drName : doctor.name,
-        treatment : []
-      }
-      Patient.findById(req.params.patID)
-      .then((patient)=>{
-        patient.files.push(newFile);
-        Patient.findByIdAndUpdate(req.params.patID , {
-          files : patient.files
-        })
-        .then((doc)=>{
-          res.send("File added to patient " + req.params.patID);
-        } , (err)=>{
-          res.send("ERROR!!!");
-        })
-        .catch((err)=>{
-          res.send("ERROR!!!2.0");
-        })
-      })
-    })
-    .catch((err)=>{
-      res.send("No such Doctor");
-    })
+      Patient.findById(req.params.pt)
+    .then((doc)=>{
+     
+          res.render("record" , {records : doc.files[req.params.rt]});
+          // res.redirect(`/dashboard/search/${doc._id}`);
+   } )  
   }
   else
   {
-    res.redirect('/');
+    res.redirect(`/`);
   }
 })
-
 
 dr_dashboardRouter.route('/search/:patID')
 
@@ -383,15 +409,7 @@ dr_dashboardRouter.route('/search/:patID')
       }
       else
       {
-          const url =   doc._id.toString();
-
-          const str = doc.image.data.toString('base64');
-
-          var img = {
-              contentType: doc.image.contentType,
-              data : str
-          }
-          res.render("patientInfo" , {patient : doc , image : img });
+          res.render("patientInfo" , {patient : doc});
           // res.redirect(`/dashboard/search/${doc._id}`);
       }
     })
@@ -401,6 +419,101 @@ dr_dashboardRouter.route('/search/:patID')
     res.redirect(`/`);
   }
 }) 
+
+.post((req,res,next)=>{
+     var type = req.cookies.type;
+  var user = req.cookies.user;
+  console.log(req.files)
+  if(type == 'doctor')
+  {
+    if(req.body.dis){
+            Doctor.findById(req.cookies.user)
+            .then((doctor)=>{
+
+              var newFile =  
+              {
+                drName : doctor.name,
+                desease : req.body.dis,
+                treatment : []
+              }
+              Patient.findById(req.params.patID)
+              .then((patient)=>{
+                patient.files.push(newFile);
+                Patient.findByIdAndUpdate(req.params.patID , {
+                  files : patient.files
+                })
+                .then((doc)=>{
+                  res.send("File added to patient " + req.params.patID);
+                } , (err)=>{
+                  res.send("ERROR!!!");
+                })
+                .catch((err)=>{
+                  res.send("ERROR!!!2.0");
+                })
+              })
+            })
+            .catch((err)=>{
+              res.send("No such Doctor");
+            })
+    }
+    else
+    {
+            
+             Doctor.findById(req.cookies.user)
+            .then((doctor)=>{
+
+                  var image;
+                  console.log(req.body)
+                  if(req.files)
+                  {
+                    image={
+                       data: req.files.record.data,
+                       contentType: req.files.record.name.split('.').pop()
+                      }
+                  }
+                  console.log(req.body.dise)
+              Patient.updateOne(
+                            { _id :req.params.patID ,
+                              "files" :{
+                                "$elemMatch":{"drName":doctor.name , "desease":req.body.dise}
+                              }
+                          },
+                          {
+                              "$push" :{
+                                    "files.$.treatment":{
+                                       "prescription":req.body.comment,
+                                       "record":image
+                                      }
+
+                              }
+                          },{ upsert: true, new: true },
+                          function(err, result){
+                              if(err){
+                                   console.log(err)
+                              }else if(!result){
+                                   //update not success
+                                   console.log("no success")
+                              }else{
+                                   console.log(result)
+                                   console.log("success")
+
+                              }
+                          }
+
+
+                )
+                 
+              res.send("success")
+    })
+
+    }
+  }
+
+  else
+  {
+    res.redirect('/');
+  }
+})
 
 
 

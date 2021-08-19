@@ -4,15 +4,57 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <title>Document</title>
+    <style type="text/css">
+        #choose{
+            text-align: center;
+            margin: auto;
+        }
+    </style>
 </head>
+<body style="height: 100vh;background: url('/images/signup_bg2.jpeg') fixed no-repeat;background-size: cover;">
+    <a href="/logout">
+        <button class="btn btn-danger btn-lg" style="z-index: 1;float:right;">Logout</button></a>
+        <h2 style="margin-bottom:50px;text-align:center;color: white; margin-top: 30px ">Patient's Information</h2>
+        <div style="text-align: center;font-size: 20px;font-family: Georgia, Times, 'Times New Roman', serif;background-color:rgba(255,255,255,.8);border: 1px solid;box-sizing:border-box;width: 70%;margin: 0 auto;">
+            <b>Name:</b><p><%=patient.name%></p><br>
+            <b>Blood Group:</b><p><%=patient.bloodGr%></p><br>
+            <b>State:</b><p><%=patient.state%></p><br>
+            <b>District</b><p><%=patient.district%></p><br>
+            <b>Aadhar No:</b><p><%=patient.aadhar%></p><br>
+            <b>Medical History:</b><br>
+            <% for(var i=0;i < patient.files.length;i++){ %>
+                <br><br><li><b>Doctor:</b><%=patient.files[i].drName %><br>
+                   <b>Desease:</b> <%= patient.files[i].desease %><br>
+                   <a href="/dashboard/report/<%=patient._id%>/<%=i%>">report</a>
+                </li><br>
+                <hr>
+
+
+        <% } %>
+        <h2>Add report to file</h2><br>
+            <form action="" method="post" enctype="multipart/form-data">
+          <label>Disease: </label><input type="text" name="dise"><br><br>
+          <label>add report: </label><input id="choose" type="file" name="record" id="file" /><br
+          >
+          <textarea name="comment" cols="30" rows="7" placeholder="add information about treatment/prescription"></textarea><br>
+          <button type="submit" class="btn btn-lg btn-success">add</button>
+        </form>
+        <hr>
+        <br>
+        <h2>Create a new file</h2><br>
+        <form action="" method="post">
+        <label>Disease: </label><input type="text" name="dis"><br>
+       <button type="submit" class="btn btn-lg btn-success">Report</button></a>
+       </form> 
+        </div>
+   
+</body>
 <body>
     
   
-        
-        <p><%= patient%></p>
-        <img src= "data:<%= image.contentType %>;base64,<%= image.data %>">
-        <a href="/dashboard/search/<%= patient._id %>/file"><button>Report New File</button></a> 
+       
         
             
 

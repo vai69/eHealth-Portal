@@ -6,8 +6,9 @@ var treatmentSchema = new Schema({
     prescription:{
         type : String,
     },
-    reportConclusion : {
-        type : String
+    record: {
+        data: Buffer, 
+        contentType: String
     }
 });
 
@@ -38,7 +39,6 @@ var patientSchema = new Schema({
     },
     DOB : {
         type:Date ,
-         required : true
     }
     ,
     email:{
@@ -47,7 +47,10 @@ var patientSchema = new Schema({
     },
     mobile:{
         type : Number,
-        required : true,
+    },
+    password:{
+        type : String,
+        requried : true,
         unique : true
     },
     bloodGr : {

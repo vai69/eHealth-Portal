@@ -2,50 +2,64 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../stylesheets/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <title>Document</title>
+    <style type="text/css">
+        img{
+            width:100%;
+            height:auto;
+        }
+    </style>
 </head>
-<body>
-    
+<body style="height: 100vh;background: url('/images/signup_bg2.jpeg') fixed no-repeat;background-size: cover;">
+        <a href="/logout"><button class="btn btn-danger btn-lg" style="z-index: 1;float:right;">Logout</button></a>
 
+ <h2 style="margin-bottom:50px;text-align:center;color: white; margin-top: 30px ">Applicant Information</h2>      
+           
+        <div class="verified_data">
 
-
-    <% if(  isPat  == 1 ) {%>
-        <form  action = "<%= postURL%>"   method="POST" >
-            <p><%= patient%></p>
+            <b>Username:</b><p><%=patient.username%></p><br>
+            <b>Name:</b><p><%=patient.name%></p><br>
+            <b>DOB:</b><p><%=patient.DOB%></p><br>
+            <b>Email:</b><p><%=patient.email%></p><br>
+            <b>Mobile:</b><p><%=patient.mobile%></p><br>
+            <% if (patient.bloodGr!=undefined) { %>
+                <b>Blood Group:</b><p><%=patient.bloodGr%></p><br>
+            <% } %>
+            <b>State:</b><p><%=patient.state%></p><br>
+            <b>District</b><p><%=patient.district%></p><br>
+            <b>Aadhar No:</b><p><%=patient.aadhar%></p><br>
+            <% if (patient.nomeneeAadhar!=undefined) { %>
+                <b>Nomenee Aadhar no:</b><p><%=patient.nomeneeAadhar%></p><br>
+            <% } %>
+           <b>Id proof:</b><br>
+            <% if(  isPat  == 1 ) {%>
+        
             <img src= "data:<%= image.contentType %>;base64,<%= image.data %>">
         
             
-            
-            <textarea name="comment" cols="30" rows="10">Your application is being verified successfully</textarea>
-
-            <button type="submit" name="submit" value="success$<%= patient.email %>" >Success</button>
-            <button type="submit" name="submit" value="failure$<%= patient.email %>" >Failure</button>
-        </form>
     <%}else {%>
-        <form  action = "<%= postURL%>"   method="POST" >
-            <p><%= patient%></p>
             <img src= "data:<%= image.contentType %>;base64,<%= image.data %>">
-        
-            
-            
-            
-
-            <p>certs</p>
+            <br><br><b>Certificates:</b><br>
 
             <% certs.forEach( cert => { %>
-                <img src= "data:<%= cert.contentType %>;base64,<%= cert.data %>">
+                <img src= "data:<%= cert.contentType %>;base64,<%= cert.data %>"><br>
             <% }); %>
-
-
-
-            <textarea name="comment" cols="30" rows="10">Your application is being verified successfully</textarea>
-            <button type="submit" name="submit" value="success$<%= patient.email %>" >Success</button>
-            <button type="submit" name="submit" value="failure$<%= patient.email %>" >Failure</button>
-        </form>
             
     <%}%>
+
+    <br><br><br><br><br><br><br><br><br>
+      <form  style="position: relative; bottom: 0px;" action = "<%= postURL%>"   method="POST" >
+            <textarea name="comment" cols="30" rows="5">Your application is being verified successfully</textarea><br><br>
+            <button class="btn btn-success btn-lg" type="submit" name="submit" value="success$<%= patient.email %>" >Success</button>
+            <button class="btn btn-danger btn-lg" type="submit" name="submit" value="failure$<%= patient.email %>" >Failure</button>
+        </form>
+    </div>
+
+
    
 </body>
 </html>

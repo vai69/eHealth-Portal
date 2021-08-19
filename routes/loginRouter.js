@@ -77,7 +77,7 @@ loginRouter.route('/')
                     }
                     else
                     {
-                        res.send("No such user")
+                        res.send("invalid");
                     }
                 })
             }
